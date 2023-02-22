@@ -37,7 +37,6 @@ const getUserWithValue = async () => {
   return result;
 };
 
-
 const getUserByUserName = async (username) => {
   if (!collection) {
     await connect();
@@ -114,7 +113,6 @@ const updateUser = async (userData) => {
   }
 
   const update = { $set: { value } };
-
   await collection.updateOne({ username }, update);
 };
 

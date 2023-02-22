@@ -9,10 +9,6 @@ const {
 } = require("./helpers/getAllLinkedInUrlByPage");
 
 async function runScript() {
-  const data = fs
-    .readFileSync("./output.txt", { encoding: "utf8", flag: "r" })
-    .split("\n");
-
   try {
     const page = await chromiumLaunch();
     await page.goto(

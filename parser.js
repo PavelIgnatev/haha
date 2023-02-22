@@ -71,7 +71,7 @@ const parser = async () => {
         throw new Error();
       }
 
-      updateUser({ username, value: JSON.parse(scriptContent.trim()) });
+      await updateUser({ username, value: JSON.parse(scriptContent.trim()) });
       console.log("Пользователь", username, "успешно обновлен");
       createUsers(urls);
     } catch (error) {
