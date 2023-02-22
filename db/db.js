@@ -23,8 +23,6 @@ const getUserWithOutValue = async (skip) => {
   const query = { value: null };
   const result = await collection.find(query).skip(skip).limit(200).toArray();
 
-  console.log(result.length);
-
   return result;
 };
 
@@ -35,8 +33,6 @@ const getUserWithValue = async () => {
 
   const query = { value: { $ne: null } };
   const result = await collection.find(query).toArray();
-
-  console.log(result.length);
 
   return result;
 };

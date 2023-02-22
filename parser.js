@@ -20,36 +20,36 @@ const parser = async () => {
     "Пользователей в работе:",
     result.length,
     ", позиция начата с:",
-    Number(process.env.SKIP ? Number(process.env.SKIP) * 100 : 0)
+    Number(process.env.SKIP ?? 0)
   );
-
-  let isClosed = false;
 
   for (const username of usernames) {
     try {
       await page.goto(`https://www.linkedin.com/in/${username}`);
 
-      await page.waitForLoadState("load");
+      await page.waitForSelector('[data-test-id="nav-logo"]');
 
-      await page.waitForTimeout(1000);
+      const isGoinLinkedin = await page.title();
 
-      const publicRegister = await page.$(
-        ".modal__overlay--full-page.modal__overlay.modal__overlay--visible"
-      );
-      const publicResigter2 = await page.$(
+      if (isGoinLinkedin === "Sign In | LinkedIn") {
+        console.log(isGoinLinkedin)
+        process.exit();
+      }
+
+      const publicResigter = await page.$(
         '[aria-labelledby="public_profile_contextual-sign-in-modal-header"]'
       );
+      const publicResigter2 = await page.$(
+        "#public_profile_contextual-sign-in"
+      );
 
-      if (publicRegister) {
-        await publicRegister.evaluate((node) => {
-          node.style.display = "none";
-        });
-      }
-      if (publicResigter2) {
-        await publicResigter2.evaluate((node) => {
-          node.style.display = "none";
-        });
-      }
+      await publicResigter?.evaluate((node) => {
+        node.style.display = "none";
+      });
+
+      await publicResigter2?.evaluate((node) => {
+        node.style.display = "none";
+      });
 
       const showMore = await page.$('button:has-text("Show more profiles")');
 
@@ -70,6 +70,7 @@ const parser = async () => {
       if (!scriptContent) {
         throw new Error();
       }
+
       updateUser({ username, value: JSON.parse(scriptContent.trim()) });
       console.log("Пользователь", username, "успешно обновлен");
       createUsers(urls);
@@ -88,7 +89,6 @@ const parser = async () => {
           deleteUser(username);
         }
       } catch (error) {
-        console.log(error);
         process.exit();
       }
     }
