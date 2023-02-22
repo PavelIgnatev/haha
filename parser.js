@@ -20,7 +20,7 @@ const parser = async () => {
     "Пользователей в работе:",
     result.length,
     ", позиция начата с:",
-    Number(process.env.SKIP ?? 0)
+    Number(process.env.SKIP ? Number(process.env.SKIP) * 100 : 0)
   );
 
   let isClosed = false;
@@ -78,9 +78,9 @@ const parser = async () => {
         if (!page) {
           process.exit();
         }
-  
+
         const isGoinLinkedin = await page.$('h1:has-text("Join linkedin")');
-  
+
         if (isGoinLinkedin) {
           process.exit();
         } else {
@@ -88,10 +88,9 @@ const parser = async () => {
           deleteUser(username);
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
         process.exit();
       }
-
     }
   }
 
