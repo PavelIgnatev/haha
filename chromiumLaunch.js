@@ -9,7 +9,7 @@ const chromiumLaunch = async () => {
   chromium.use(StealthPlugin());
 
   const browser = await chromium.launch({
-    headless: false,
+    headless: true,
     chromiumSandbox: false,
   });
   const context = await browser.newContext({
